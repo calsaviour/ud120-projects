@@ -1,6 +1,9 @@
 #!/usr/bin/python
-
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+##matplotlib.use('qt4agg')
+
 from prep_terrain_data import makeTerrainData
 from class_vis import prettyPicture
 
@@ -24,19 +27,24 @@ plt.scatter(grade_slow, bumpy_slow, color = "r", label="slow")
 plt.legend()
 plt.xlabel("bumpiness")
 plt.ylabel("grade")
-plt.show()
+##plt.show()
 ################################################################################
 
 
-### your code here!  name your classifier object clf if you want the 
+### your code here!  name your classifier object clf if you want the
 ### visualization code (prettyPicture) to show you the decision boundary
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
 
+clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
+                         algorithm="SAMME",
+                         learning_rate=1,
+                         n_estimators=200)
 
+clf = clf.fit(features_train, labels_train)
+pred = clf.score(features_test, labels_test)
 
-
-
-
-
+print pred
 
 try:
     prettyPicture(clf, features_test, labels_test)
